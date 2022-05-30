@@ -1,0 +1,35 @@
+service: Typescript-project
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  iamRoleStatements:
+        - Effect: Allow
+          Action: 
+           - ses:*
+           - dynamodb:*
+           - s3:*
+          Resource: '*'
+
+functions:
+  hello:
+    handler: ./js_file/handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: post
+
+  store:
+    handler: ./js_file/Dynamo.store
+    events:
+      - httpApi:
+           path: /dbstore
+           method: post
+
+  ImageUpload:
+      handler: ./js_file/S3Bukket.ImageUpload
+      events:
+        - httpApi:
+            path: /upload
+            method: post
